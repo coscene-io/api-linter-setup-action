@@ -1,0 +1,15 @@
+name: 'api-linter-setup'
+description: >
+  Install api-linter for use in other jobs.
+branding:
+  icon: play
+  color: blue
+inputs:
+  version:
+    description: The version of buf to set up.
+    default: '1.30.1'
+  github_token:
+    description: The GitHub token to use when making API requests.
+runs:
+  using: 'node12'
+  main: './dist/main.js'
