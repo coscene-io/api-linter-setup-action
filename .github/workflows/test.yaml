@@ -1,8 +1,11 @@
-name: ci
+name: test
 on: [push]
 jobs:
-  test:
-    runs-on: self-hosted
+  test-darwin:
+    strategy:
+      matrix:
+        os: [macOS, Linux]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./ # Run the local version of the action.

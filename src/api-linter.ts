@@ -1,6 +1,4 @@
 import * as os from 'os';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 import { Octokit } from '@octokit/core';
@@ -48,13 +46,41 @@ export async function getAPILinter(version: string, githubToken: string): Promis
 // current architecture and platform.
 // TODO(juchao): Support all architecture and platform.
 async function getDownloadURL(version: string, githubToken: string): Promise<string | Error> {
-  if (os.platform() !== "darwin") {
-    return {
-      message: `The "${os.platform()}" platform is not supported with a api-linter setup action.`
-    }
+  let architecture = '';
+  switch (os.arch()) {
+    // The available architectures can be found at:
+    // https://nodejs.org/api/process.html#process_process_arch
+    case 'x64':
+      architecture = 'amd64';
+      break;
+    case 'arm64':
+      architecture = 'arm';
+      break;
+    default:
+      return {
+        message: `The "${os.arch()}" architecture is not supported with a Buf release.`
+      };
   }
-  let architecture = 'amd64';
-  let platform = 'darwin';
+
+  let platform = '';
+  switch (os.platform()) {
+    // The available platforms can be found at:
+    // https://nodejs.org/api/process.html#process_process_platform
+    case 'linux':
+      platform = 'linux';
+      break;
+    case 'darwin':
+      platform = 'darwin';
+      architecture = 'amd64';
+      break;
+    case 'win32':
+      platform = 'windows';
+      break;
+    default:
+      return {
+        message: `The "${os.platform()}" platform is not supported with a Buf release.`
+      };
+  }
 
   let assetName = `api-linter-${version}-${platform}-${architecture}.tar.gz`;
   const octokit = new Octokit({ auth: githubToken });
