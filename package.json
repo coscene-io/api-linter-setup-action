@@ -1,0 +1,14 @@
+{
+  "name": "api-linter-setup",
+  "version": "0.0.1",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/io": "^1.1.2",
+    "@actions/tool-cache": "^1.7.2",
+    "@octokit/core": "^3.6.0",
+    "child_process": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.24"
+  }
+}
